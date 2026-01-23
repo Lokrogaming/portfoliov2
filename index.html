@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Portfolio | Gamer Pro</title>
+    <!-- Importing a modern gaming font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* COLORS: Change these variables to change the entire theme color */
+            --bg-dark: #050505;
+            --neon-primary: #00f2ff; /* Cyan Neon */
+            --neon-secondary: #7000ff; /* Purple Neon */
+            --text-main: #ffffff;
+            --text-dim: #b0b0b0;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: default;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- ANIMATED BACKGROUND --- */
+        .bg-animate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+            overflow: hidden;
+        }
+
+        /* Animated floating orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s infinite alternate;
+            opacity: 0.4;
+        }
+
+        .orb-1 { width: 400px; height: 400px; background: var(--neon-primary); top: -100px; left: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: var(--neon-secondary); bottom: -50px; right: -50px; animation-duration: 25s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 50px); }
+        }
+
+        /* --- NAVIGATION --- */
+        /* To make segments clickable, the nav must be functional */
+        .nav-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        /* The Burger Icon */
+        .menu-toggle {
+            width: 60px;
+            height: 60px;
+            background: var(--card-bg);
+            border: 2px solid var(--neon-primary);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-primary);
+            transition: var(--transition);
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--neon-primary);
+            margin: 3px 0;
+            transition: var(--transition);
+        }
+
+        /* Sidebar Nav */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Hidden by default */
+            width: 300px;
+            height: 100vh;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            border-left: 2px solid var(--neon-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+            transition: 0.5s ease-in-out;
+            z-index: 999;
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            font-family: 'Orbitron', sans-serif;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover {
+            color: var(--neon-primary);
+            text-shadow: 0 0 10px var(--neon-primary);
+            padding-left: 10px;
+        }
+
+        /* Hamburger animation to X */
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* --- SECTIONS --- */
+        section {
+            min-height: 100vh;
+            padding: 100px 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .hero {
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--neon-primary), var(--neon-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px var(--neon-primary));
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        /* --- CONTENT CARDS --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--neon-primary);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.2);
+        }
+
+        .card h3 {
+            color: var(--neon-primary);
+            margin-bottom: 15px;
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--neon-secondary);
+            padding-left: 20px;
+        }
+
+        /* --- UTILITY & VISIBILITY --- */
+        /* Change "display: none" to "display: block" to show/hide sections */
+        .hidden-section {
+            display: none; 
+        }
+
+        /* Neon Button */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--neon-primary);
+            color: var(--neon-primary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            transition: var(--transition);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--neon-primary);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .nav-menu { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND ELEMENTS -->
+    <!-- You can add more .orb divs here to create more background blobs -->
+    <div class="bg-animate">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- NAVIGATION MENU -->
+    <div class="nav-container">
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <nav class="nav-menu" id="navMenu">
+        <a href="#home" onclick="toggleMenu()">Home</a>
+        <a href="#about" onclick="toggleMenu()">About</a>
+        <a href="#projects" onclick="toggleMenu()">Projects</a>
+        <a href="#stats" onclick="toggleMenu()">Experience</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+    </nav>
+
+    <!-- MAIN SECTIONS -->
+    
+    <!-- 1. HERO SECTION -->
+    <section id="home" class="hero">
+        <p>INITIALIZING INTERFACE...</p>
+        <h1>PLAYER ONE</h1> <!-- CHANGE NAME HERE -->
+        <p>Fullstack Developer | Cyber Security Enthusiast | Pro Gamer</p>
+        <div>
+            <a href="#projects" class="btn">VIEW MISSIONS</a>
+        </div>
+    </section>
+
+    <!-- 2. ABOUT SECTION -->
+    <section id="about">
+        <h2 class="section-title">Character Profile</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>The Story</h3>
+                <p>Coding and gaming since the early 2000s. I build immersive digital experiences with focus on performance and neon aesthetics.</p>
+            </div>
+            <div class="card">
+                <h3>Skill Tree</h3>
+                <p>React, Node.js, Three.js, Python, C++, and UI/UX Design.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PROJECTS SECTION -->
+    <section id="projects">
+        <h2 class="section-title">Current Quests</h2>
+        <div class="grid">
+            <!-- PROJECT CARD 1 -->
+            <div class="card">
+                <h3>Project: Neon City</h3>
+                <p>A procedural city generator built with Three.js and GLSL shaders.</p>
+                <a href="#" class="btn">LAUNCH</a>
+            </div>
+            <!-- PROJECT CARD 2 -->
+            <div class="card">
+                <h3>Cyber API</h3>
+                <p>High-performance backend for real-time multiplayer gaming architectures.</p>
+                <a href="#" class="btn">REPO</a>
+            </div>
+            <!-- PROJECT CARD 3 -->
+            <div class="card">
+                <h3>Shadow Protocol</h3>
+                <p>Experimental encryption tool with a hacking-style visual interface.</p>
+                <a href="#" class="btn">DEMO</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. EXPERIENCE SECTION -->
+    <section id="stats">
+        <h2 class="section-title">XP Stats (Experience)</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Level 25</h3>
+                <p>Senior Developer at Tech-Corp (2021-Present)</p>
+            </div>
+            <div class="card">
+                <h3>Level 10</h3>
+                <p>Junior Architect at MegaSystems (2018-2021)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CONTACT SECTION -->
+    <section id="contact">
+        <h2 class="section-title">Link Up</h2>
+        <div class="card" style="max-width: 600px; margin: 0 auto; width: 100%;">
+            <p>Ready to start a new co-op project? Send a transmission.</p>
+            <form style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <!-- To make this work, you would link to a service like Formspree -->
+                <input type="text" placeholder="Gamer Tag" style="padding: 10px; background: #111; border: 1px solid var(--neon-secondary); color: white;">
+                <textarea rows="5" placeholder="Your Message" style="padding: 10px; background: #111; border: 1px solid var(--neon-secondary); color: white;"></textarea>
+                <button type="button" class="btn">SEND SIGNAL</button>
+                
+
+
+
+                <!-- FORMSUBMIT PREFERENCES AND SETTINGS -->
+                <!-- PLEASE CHANGE THIS DOMAIN TO YOUR SITE URL -->
+                <input type="hidden" name="_next" value="https://yourdomain.com/">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="basic">
+                   <!-- YOU CAN CHANGE THE SUBJECT OR REMOVE THIS -->
+                   <input type="hidden" name="_subject" value="New submission!">
+                   <!-- IF THE SUBMIT SHOULD BE SENT TO OTHER EMAILS TOO, CHANGE THE EMAILS HERE -->
+                   <input type="hidden" name="_cc" value="another@email.com,yetanother@email.com">
+                   <!-- PLEASE REMOVE THIS LINE IF YOU DIDNT WANT THAT YOUR USERS RECEAVE AN AUTORESPONSE -->
+                   <input type="hidden" name="_autoresponse" value="your custom message">
+
+                   <!-- INPUT AN WEBHOOKURL HERE -->
+                   <input type="hidden" name="_webhook" value="https://yourdomain.co/your-webhook">
+            </form>
+        </div>
+    </section>
+
+    <!-- 
+      HOW TO ADD HIDDEN SECTIONS:
+      Copy the block below. To make it visible, remove the class "hidden-section" 
+    -->
+    <section id="extra-section" class="hidden-section">
+        <h2 class="section-title">Secret Achievement</h2>
+        <div class="card">
+            <p>This section is hidden by default. Remove the 'hidden-section' class in the HTML to show it!</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="text-align: center; padding: 50px; color: var(--text-dim); border-top: 1px solid #222;">
+        <p>&copy; 2023 // NEON_PORTFOLIO_V1.0 // ALL RIGHTS RESERVED</p>
+    </footer>
+
+    <!-- JAVASCRIPT FOR THE MENU TRANSFORMATION -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        function toggleMenu() {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+    <!-- 
+        FINAL USER NOTES:
+        1. COLORS: Look at the top <style> section under :root. Change --neon-primary to any hex code.
+        2. ADDING CONTENT: Simply copy the <div class="card">...</div> blocks and paste them inside the <div class="grid">.
+        3. VISIBILITY: To hide a section, add class="hidden-section" to the <section> tag. To show it, remove that class.
+        4. IMAGES: You can add <img> tags inside cards, just make sure to set their style to width: 100%; border-radius: 10px;
+    -->
+</body>
+</html>
